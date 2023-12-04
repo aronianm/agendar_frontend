@@ -1,20 +1,26 @@
 import Head from 'next/head'
-
-import { Inter } from 'next/font/google'
 import { Box } from '@mui/material'
 import { Navigation } from '@/components/navigation'
-import { useSession, signIn, signOut } from "next-auth/react"
-
 import LoginSection from '../sections/admin/Login'
-const inter = Inter({ subsets: ['latin'] })
-
-import Authentication3Comp from '../components/quest/Authentication3'
 import SideNavigation from '@/components/navigation/LoggedInNavigation'
-import { useState } from 'react'
+import { useAuth } from '@/hooks/use-auth'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useEffect, useState } from 'react'
 
-export default function Home() {
-  // const { data: session } = useSession()
-  const [session, setSession] = useState(false)
+
+const Page = () => {
+  const data = useAuth();
+  const [errorMessage, setErrorMessages] = useState(sessionStorage['errorMessage'])
+
+  useEffect(() => {
+    if(errorMessage){
+      toast.error(errorMessage)
+      setErrorMessages("")
+      delete sessionStorage['errorMessage']
+    }
+  }, [])
+  
   return (
     <>
       <Head>
@@ -25,11 +31,19 @@ export default function Home() {
       </Head>
       <main>
           <Box>
-            <Navigation session={session}/>
-            
-            {session ? <SideNavigation/> : <LoginSection session={session} setSession={setSession}/> }
+            <ToastContainer />
+            <Navigation session={data.isAuthenticated}/>
+            {data.isAuthenticated ? <SideNavigation/> : <LoginSection /> }
           </Box>
       </main>
     </>
   )
 }
+
+Page.getLayout = (page) => (
+    page
+);
+
+export default Page;
+
+

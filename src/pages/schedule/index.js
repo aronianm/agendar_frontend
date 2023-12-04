@@ -1,11 +1,17 @@
-import { NoUserNavigation } from '@/components/navigation'
-import { Box } from '@mui/material'
 import {Calendar} from '../../components/calendar'
-import LoggedInNavigation from '@/components/navigation/LoggedInNavigation'
-export default () => {
-    return <Box>
-            <LoggedInNavigation>
-                <Calendar/>
-            </LoggedInNavigation>
-        </Box>
+import {Layout as DashboardLayout} from '../../layouts/layout'
+const Page = () => {
+    return <Calendar/>
 }
+
+
+
+
+
+Page.getLayout = (page) => (
+    <DashboardLayout>
+      {page}
+    </DashboardLayout>
+  );
+  
+  export default Page;

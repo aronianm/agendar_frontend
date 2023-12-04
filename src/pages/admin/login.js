@@ -1,4 +1,5 @@
 import Login from "@/sections/admin/Login"
-export default () => {
+const Page =  () => {
     return <Login/>
 }
+

@@ -20,7 +20,8 @@ import { useRouter } from 'next/router'
 import Groups2Icon from '@mui/icons-material/Groups2';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
-import { Badge } from '@mui/material';
+import { Badge, Button, Paper } from '@mui/material';
+import { useAuth } from '@/hooks/use-auth';
 
 const drawerWidth = 240;
 
@@ -92,6 +93,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function LoggedInNavigation({children}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const auth = useAuth();
+
   const router = useRouter()
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -118,9 +121,16 @@ export default function LoggedInNavigation({children}) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Angedar
-          </Typography>
+          <Box sx={{display: 'flex', flexGrow: 1}}>
+            <Box sx={{flexGrow: 1}}>
+              <Typography variant="h6" noWrap component="div">
+                Angedar
+              </Typography>
+            </Box>
+            <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'end'}}>
+              <Button variant='contained' color='primary' onClick={() => {auth.signOut();}}>Logout</Button>
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

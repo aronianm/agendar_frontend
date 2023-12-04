@@ -9,6 +9,7 @@ const Calendar = (props) => {
                     initialView='dayGridMonth'
                     weekends={true}
                     events={events}
+                    contentHeight={'80vh'}
                     eventContent={Event}
                 />
            
