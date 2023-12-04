@@ -156,6 +156,7 @@ export const AuthProvider = (props) => {
   };
 
   const signOut = () => {
+    sessionStorage['authenticated'] = false
     dispatch({
       type: HANDLERS.SIGN_OUT
     });

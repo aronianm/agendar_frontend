@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { getRandomDate, formatAsMMDDYYYY } from "@/helpers/time";
-
+import {Layout as DashboardLayout} from '../../layouts/layout'
 
 function createData(name, age, nextShift) {
   return { name, age,  nextShift };
@@ -24,7 +24,7 @@ const rows = [
   createData('William Liver', 31, new Date('1/30/2023')),
 ];
 
-export default () => {
+const Page = () => {
     return <Box>
                 <LoggedInNavigation>
                 <TableContainer component={Paper}>
@@ -59,3 +59,11 @@ export default () => {
                 </LoggedInNavigation>
             </Box>
 }
+
+Page.getLayout = (page) => (
+    <DashboardLayout>
+      {page}
+    </DashboardLayout>
+  );
+  
+  export default Page;
