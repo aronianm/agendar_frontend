@@ -78,27 +78,36 @@ export const AuthProvider = (props) => {
 
     try {
       isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
+      let user = {}
+      if(isAuthenticated){
+        const headers = {
+          Authorization: `${sessionStorage['token']}`,
+          'Content-Type': 'application/json',
+        }
+        
+        await axios.get(`${API_URL}/api/v1/authenticate`, {headers}).then((response) => {
+            dispatch({
+              type: HANDLERS.INITIALIZE,
+              payload: response.data.data
+            });
+            }).catch((error) => {
+              isAuthenticated = false
+              delete sessionStorage['token']
+              delete sessionStorage['authenticated']
+              dispatch({
+                type: HANDLERS.INITIALIZE
+              });
+              
+        })
+
+
+      }else{
+        dispatch({
+          type: HANDLERS.INITIALIZE
+        });
+      }
     } catch (err) {
       console.error(err);
-    }
-
-    if (isAuthenticated) {
-      const user = {
-        id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
-      };
-
-      
-      dispatch({
-        type: HANDLERS.INITIALIZE,
-        payload: user
-      });
-    } else {
-      dispatch({
-        type: HANDLERS.INITIALIZE
-      });
     }
   };
 
