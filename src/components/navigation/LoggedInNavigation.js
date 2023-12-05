@@ -128,7 +128,7 @@ export default function LoggedInNavigation({children}) {
               </Typography>
             </Box>
             <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'end'}}>
-              <Button variant='contained' color='primary' onClick={() => {auth.signOut();}}>Logout</Button>
+              <Button variant='contained' color='primary' onClick={(e) => {e.preventDefault(); auth.signOut();}}>Logout</Button>
             </Box>
           </Box>
         </Toolbar>

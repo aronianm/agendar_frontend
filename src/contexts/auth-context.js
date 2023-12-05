@@ -111,20 +111,26 @@ export const AuthProvider = (props) => {
   );
 
   const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
+    const body = {
+      user: {
+        email,
+        password
+      }
     }
+  
+    await axios.post(`${API_URL}/login`, body).then((response) => {
+      const {data} = response
+      const user = data.status.data.user;
+      sessionStorage['authenticated'] = true
+      sessionStorage['token'] = response.headers.authorization
+      dispatch({
+        type: HANDLERS.SIGN_IN,
+        payload: user,
+        isAuthenticated: true
+      });
+    }).catch((error) => {
 
-    try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
-    }
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
+    })
   };
 
   const signUp = async ({email, fname, lname, password}) => {
@@ -139,7 +145,7 @@ export const AuthProvider = (props) => {
     let user = {}
     let errorMessage = ""
     await axios.post(`${API_URL}/signup`, body).then((response) => {
-        sessionStorage['token'] = response.data.data.jti
+        sessionStorage['token'] = response.headers.authorization
         sessionStorage['authenticated'] = true
         dispatch({
           type: HANDLERS.SIGN_IN,
@@ -156,10 +162,23 @@ export const AuthProvider = (props) => {
   };
 
   const signOut = () => {
-    sessionStorage['authenticated'] = false
-    dispatch({
-      type: HANDLERS.SIGN_OUT
-    });
+    const body = {
+      headers: {
+        Authorization: `${sessionStorage['token']}`
+      }
+    }
+    axios.delete(`${API_URL}/logout`, body).then((response) => {
+      delete sessionStorage['token']
+      delete sessionStorage['authenticated']
+      dispatch({
+        type: HANDLERS.SIGN_OUT,
+        payload: response.data.data
+      });
+    }).catch((error) => {
+      delete sessionStorage['token']
+      delete sessionStorage['authenticated']
+        sessionStorage['errorMessage'] = error.response.statusText
+    })
   };
 
   return (
