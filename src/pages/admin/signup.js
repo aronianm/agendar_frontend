@@ -54,7 +54,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Register | Devias Kit
+          Register | Agendar
         </title>
       </Head>
       <Box

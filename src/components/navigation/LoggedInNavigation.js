@@ -141,7 +141,7 @@ export default function LoggedInNavigation({children}) {
         </DrawerHeader>
         <Divider />
         <List>
-          {[{name: 'Team', icon: <Groups2Icon/>, url: '/team'}, 
+          {[{name: 'Team', icon: <Groups2Icon/>, url: '/teams'}, 
             {name: 'Schedule', icon: <EventNoteIcon/>, url: '/schedule'},
             {name: 'Requests', icon: <Badge badgeContent={4} color={'error'}>
                                         <CircleNotificationsIcon />

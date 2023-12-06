@@ -1,14 +1,26 @@
 import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { withAuthGuard } from 'src/hocs/with-auth-guard';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast  } from 'react-toastify';
 import { Box } from '@mui/material';
 import LoggedInNavigation from '@/components/navigation/LoggedInNavigation';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Layout = withAuthGuard((props) => {
   const { children } = props;
   const pathname = usePathname();
   const [openNav, setOpenNav] = useState(false);
+
+
+
+  if(sessionStorage['successMessage']){
+    toast.success(sessionStorage['successMessage'])
+    delete sessionStorage['successMessage']
+  }
+  if(sessionStorage['errorMessage']){
+      toast.error(sessionStorage['errorMessage'])
+      delete sessionStorage['errorMessage']
+  }
 
   const handlePathnameChange = useCallback(
     () => {
