@@ -1,7 +1,7 @@
 import { Box, Button, Container, Divider, TextField, Typography } from "@mui/material"
 import {Layout as DashboardLayout} from '../../layouts/layout'
 import { useState } from "react";
-import { create } from "../api/agendar/teams";
+import { create } from "../../api/agendar/teams";
 import { useRouter } from "next/router";
 
 

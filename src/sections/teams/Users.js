@@ -1,10 +1,9 @@
-import { Box, Tabs, Tab, Table, TableCell, TableHead, TableBody, TableRow, TextField, Button } from "@mui/material"
+import { Box, Tabs, Tab, Table, TableCell, TableHead, TableBody, TableRow, TextField, Button, Divider, ButtonGroup } from "@mui/material"
 import { useEffect, useState } from "react";
-
+import { alertUsers } from "@/api/agendar/users";
 import { toast  } from 'react-toastify';
 export default (props) => {
     const { teamId, value, index, ...other } = props;
-
     const [valueIdx, setValue] = useState('one');
     const [emailCount, setEmailCount] = useState(1)
     const [emails, setEmails] = useState({})
@@ -13,11 +12,16 @@ export default (props) => {
         setValue(newValue);
     };
     const handleEmailNotification = () => {
-        toast.success("Sending email")
-        console.log(emails)
-        console.log('Sending email to', emails)
-        setEmails({})
-        setEmailCount(1)
+        alertUsers(teamId,emails).then((response) => {
+            toast.success("Sending email")
+            setEmails({})
+            setEmailCount(1)
+        }).catch((error) => {
+            toast.error("Error sending message")
+        })
+        
+       
+
     }
     useEffect(() => {
         if(valueIdx === 'one' && value === 0){
@@ -41,9 +45,7 @@ export default (props) => {
             >
                 <Tab value="one" label="Listings" />
                 <Tab value="two" label="Add Users" />
-                <Button  label="Send Email" sx={{display: valueIdx !== 'one' ? 'block': 'none'}} onClick={handleEmailNotification}>
-                    Notify Users
-                </Button>
+                <Divider sx={{flexGrow: 1}}/>
             </Tabs>
             <Box  role="tabpanel"
                   hidden={valueIdx !== 'one'} 
@@ -75,9 +77,14 @@ export default (props) => {
                         return <TextField value={emails[index] ?? ''} sx={{marginBottom: 1}} label='Email' onChange={(e) => {emails[index] = e.target.value; setEmails({...emails})}} />
                     })}
                 </Box> 
-                <Button color='primary' variant="outlined" onClick={() => setEmailCount( emailCount + 1)}>
-                    Add Email
-                </Button>
+                <ButtonGroup>
+                    <Button color='primary' variant="outlined" onClick={() => setEmailCount( emailCount + 1)}>
+                        Add Email
+                    </Button>
+                    <Button  label="Send Email" variant='contained' color='warning' sx={{display: valueIdx !== 'one' ? 'block': 'none', float: 'right'}} onClick={handleEmailNotification}>
+                        Notify Users
+                    </Button>
+                </ButtonGroup>
                 
                 
             </Box>

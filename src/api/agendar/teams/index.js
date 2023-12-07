@@ -16,3 +16,7 @@ export const create = (name) => {
 export const destroy = (id) => {
     return axios.delete(`http://localhost:3001/teams/${id}`, payloadHeaders())
 }
+
+export const show = (id) => {
+    return axios.get(`http://localhost:3001/teams/${id}`, payloadHeaders())
+}

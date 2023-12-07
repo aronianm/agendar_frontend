@@ -1,8 +1,9 @@
 import { Box, Button,  Divider, Tabs, Tab,Typography } from "@mui/material"
-import {Layout as DashboardLayout} from '../../layouts/layout'
+import {Layout as DashboardLayout} from '../../../layouts/layout'
 import { useState } from "react";
-import {Users, Requests, Settings} from '../../sections/teams/'
+import {Users, Requests, Settings} from '../../../sections/teams/'
 import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 
 
 function a11yProps(index) {
@@ -15,6 +16,7 @@ function a11yProps(index) {
 
 const Page = () => {
     const router = useRouter()
+    const {id} = useParams()
     const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
@@ -32,9 +34,9 @@ const Page = () => {
                                 <Tab label="Requests" {...a11yProps(1)} />
                                 <Tab label="Settings" {...a11yProps(2)} />
                             </Tabs>
-                            <Users value={value} index={0}/>
-                            <Requests value={value} index={1}/>
-                            <Settings value={value} index={2}/>
+                            <Users value={value} index={0} teamId={id} />
+                            <Requests value={value} index={1} teamId={id}/>
+                            <Settings value={value} index={2} teamId={id}/>
                         </Box>
                     </Box>
                 </Box>

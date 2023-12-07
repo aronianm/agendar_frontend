@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {Layout as DashboardLayout} from '../../layouts/layout'
 import { useState, useEffect } from "react";
-import { index, destroy } from "../api/agendar/teams";
+import { index, destroy } from "../../api/agendar/teams";
 import {  useRouter } from "next/router";
 import { toast } from 'react-toastify';
 
@@ -53,7 +53,9 @@ const Page = () => {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {row.name}
+                                        <Button color='inherit' variant='contained' onClick={() => router.push(`/teams/${row.id}/`)}>
+                                            {row.name}
+                                        </Button>
                                     </TableCell>
                                     <TableCell component="th" scope="row" align="right">
                                         {row.users}
@@ -62,7 +64,7 @@ const Page = () => {
                                         {row.requests}
                                     </TableCell>
                                     <TableCell align="center">
-                                        <Button color='secondary' variant='contained' onClick={() => router.push(`/teams/${row.id}`)}>Configure</Button>
+                                        <Button color='secondary' variant='contained' onClick={() => router.push(`/teams/${row.id}/edit`)}>Configure</Button>
                                     </TableCell>
                                     <TableCell align="right">
                                         <Button color='error' variant='contained' onClick={() => handleDelete(row)}>Delete</Button>
